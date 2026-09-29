@@ -1,57 +1,64 @@
 # Efficient Content Extractor
 
-Turn a long video into a complete, timestamped transcript that an AI assistant can use to explain the key points and help you decide what to watch.
+**Find the moments worth watching.**
 
-The current app runs locally, retrieves **existing YouTube captions**, and prepares a single Markdown file for a separate Codex chat. It preserves the original words and caption timings so the resulting brief can link back to the relevant moments.
+Extract existing YouTube captions, bring the complete transcript to Codex, and get key points linked to the original video.
 
-**Built on [samueladegoke/yt-transcript-web](https://github.com/samueladegoke/yt-transcript-web)**, adapted from commit [`4928098`](https://github.com/samueladegoke/yt-transcript-web/commit/4928098ffe109df932a8f4bae47f31ebcf314a10). The original MIT license and copyright are retained. See [Attribution](#attribution) and [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for the sources and technologies used.
+[Quick start](#quick-start) &nbsp; / &nbsp; [See the demo](#demo-from-captions-to-a-timestamped-brief) &nbsp; / &nbsp; [Roadmap](ROADMAP.md) &nbsp; / &nbsp; [Attribution](#attribution)
+
+![The local app with a complete YouTube transcript, caption-track selection, search, and copy or download for Codex](docs/screenshots/transcript-extraction.png)
+
+Built on [samueladegoke/yt-transcript-web](https://github.com/samueladegoke/yt-transcript-web), with its MIT license preserved. Runs locally on your Mac; analysis happens in your own AI chat.
 
 ## Purpose and workflow
 
-Watching every minute of a long interview, lecture, or news program is often unnecessary when you first need an overview or one specific explanation. This project separates source collection from analysis:
+A long interview, lecture, or news program becomes easier to navigate when you can read a brief and open the passages that matter.
 
-1. Paste a YouTube video URL into the local web app.
-2. Retrieve its existing original-language captions and inspect or search the transcript.
-3. **Download for Codex** saves one complete `.transcript.md` file. **Copy for Codex** copies the same document with a prepared prompt.
-4. Give the file or copied text to Codex with the included **video-brief** skill.
-5. Read the overview and key points, then follow timestamp links to the passages worth watching.
+1. **Get the source.** Paste a YouTube link and retrieve existing captions in their original language.
+2. **Bring it to Codex.** Copy or download one complete Markdown transcript with every retrieved caption and its timestamps.
+3. **Choose what to watch.** Use the included `video-brief` skill for an overview, key points, and links back to supporting passages.
 
-The web app does not call an AI service or upload transcripts automatically. The user chooses when and where to submit the text for analysis. The skill is optional; the Markdown source also works with other assistants.
+You choose when and where to submit the transcript. The app makes no AI-service requests or automatic uploads; the Markdown also works with other assistants.
 
 ## Demo: from captions to a timestamped brief
 
-These two screenshots show the same Bloomberg Tech video moving through the workflow.
+### Read the brief. Open the passage.
 
-**1. Extract and hand off the transcript.** The local app retrieves 685 caption segments and prepares the complete timestamped Markdown document. Use **Download for Codex** or **Copy for Codex** to bring it into your own chat.
+The app above extracts **685 caption segments** from a Bloomberg Tech video. Below, a separate Codex chat turns that source into a timestamped brief.
 
-![Local transcript app showing the selected English caption track, 685 segments, and download and copy controls](docs/screenshots/transcript-extraction.png)
+![Codex displaying an overview and key points with clickable YouTube timestamps beside the exported source transcript](docs/screenshots/codex-timestamped-brief.png)
 
-**2. Read the brief and choose what to watch.** In a separate Codex chat, the `video-brief` skill guides an overview and key points with clickable YouTube timestamps. The screenshot shows the brief beside the exported source document; analysis happens in Codex, outside the web app.
+The transcript stays available beside the analysis. Follow a timestamp link to check the original context or watch only a relevant section.
 
-![Codex showing a video overview and key points with clickable timestamps beside the source transcript](docs/screenshots/codex-timestamped-brief.png)
+<details>
+<summary>About this example</summary>
 
-Example video: *Anthropic Goes Big on Compute, Microsoft Rethinks AI* by Bloomberg Tech. Video imagery and caption excerpts belong to their respective owners; the screenshots illustrate the workflow.
+Both screenshots show *Anthropic Goes Big on Compute, Microsoft Rethinks AI* by Bloomberg Tech. Video imagery and caption excerpts belong to their respective owners. The summary is produced in a separate Codex chat, not inside the extractor. Current timestamp links open YouTube; seeking inside the active player is planned.
+
+</details>
 
 ## What works today
 
-- Public individual YouTube videos with accessible uploaded or automatic captions.
-- Original-language uploaded captions preferred, automatic captions as a fallback choice; explicit selection when the original language cannot be determined.
-- Video metadata, caption-track selection, full-text search, and permanent timestamps.
-- One Markdown handoff containing every retrieved segment, exact millisecond start/end times, and source metadata.
-- Full-transcript copy/download even while the display is filtered by search.
-- `youtube-transcript-api` as the primary caption provider; `yt-dlp` for metadata and a caption-only fallback for the selected track.
-- A reusable [video-brief skill](skills/video-brief/SKILL.md) for overviews, source-linked key points, uncertainty notes, and selective watch lists.
-
-There is no audio/video download, speech recognition, translation, model download, transcript history, or AI API key requirement in the web app.
-
-| Capability | Status |
+| What you need | What the app provides |
 | --- | --- |
-| YouTube caption extraction and Codex handoff | Available |
-| TikTok, Douyin, and Bilibili adapters | Planned; not implemented |
-| Browser extension beside the video player | Planned; not implemented |
-| Click a takeaway to seek the current player | Planned; current briefs use timestamp links |
+| Original source text | Uploaded or automatic captions, explicit track selection, and full-text search |
+| A complete AI handoff | One Markdown document with all retrieved captions, source metadata, and millisecond timings |
+| Reliable source context | Language and caption provenance; original words, durations, and overlapping cues preserved |
+| Control over analysis | Copy/download for your own assistant, with an optional `video-brief` skill |
 
-See [ROADMAP.md](ROADMAP.md) for the planned platform and extension work.
+Copy and download always include the entire retrieved transcript, even when search filters the display. Uploaded original-language captions are preferred when that language can be determined.
+
+### Where this is going
+
+**YouTube works today.** The next direction is broader platform support and a brief beside the video you are watching.
+
+| Direction | Status |
+| --- | --- |
+| TikTok, Douyin, and Bilibili caption adapters | Planned |
+| Browser extension beside the video player | Planned |
+| Click a key point to seek the active player | Planned |
+
+See the [Roadmap](ROADMAP.md) for scope, proposed interfaces, and contribution priorities. These integrations and the extension are not implemented yet.
 
 ## Quick start
 
@@ -66,9 +73,14 @@ cd efficient-content-extractor
 
 Open **http://127.0.0.1:8000**. Keep the terminal open while using the app; press Control-C to stop it. On subsequent macOS runs, you can double-click `start.command` in Finder.
 
+<details>
+<summary>Setup details and download troubleshooting</summary>
+
 Setup creates an isolated Python environment in `backend/.venv`, installs backend dependencies from `backend/uv.lock`, installs frontend dependencies with `npm ci`, and builds React for FastAPI to serve. Setup copies `.env.example` to `.env` only when `.env` does not already exist. Run setup again after changing dependencies or frontend code.
 
 Use a regular browser for file downloads. In testing, the Codex embedded browser displayed and copied transcripts successfully but did not complete Blob downloads; **Copy for Codex** provides a complete handoff there.
+
+</details>
 
 ### Caption selection
 
@@ -104,6 +116,9 @@ The skill instructs the assistant to read every segment, verify supporting passa
 
 ## Source format and architecture
 
+<details>
+<summary>Explore the transcript format, project structure, and API</summary>
+
 The `youtube-transcript/v1` Markdown document includes a JSON metadata block with title, canonical URL, channel, language, caption source, provider, video duration, segment count, and caption coverage. Numbered caption headings retain start/end times as `HH:MM:SS.mmm`; original text is fenced separately. End times use actual durations. Unicode, line breaks, repeated captions, and overlapping cues are preserved.
 
 ```text
@@ -125,7 +140,11 @@ Transcript records include `text`, fractional `start` and `duration`, plus displ
 
 See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the proposed common platform adapter and player bridge. These are design directions, not APIs implemented today.
 
+</details>
+
 ## Limitations and data handling
+
+The app retrieves existing captions only. It does not download audio/video, transcribe speech, translate captions, download models, or require an AI API key.
 
 Only accessible public videos with existing captions are supported. Private, removed, restricted, sign-in-required, or captionless videos may fail. Errors distinguish invalid links, unavailable videos, missing or empty captions, blocked requests, and connection failures. YouTube can change caption access; the app does not bypass authentication or access restrictions.
 
@@ -134,6 +153,9 @@ The server binds to `127.0.0.1` and checks local hosts/origins. It is intended f
 Captions may contain mistakes, omit visuals, or leave gaps. Follow timestamp links to check the original context before relying on an important claim. Users remain responsible for how they use and share source material.
 
 ## Development and verification
+
+<details>
+<summary>Development commands, tests, and contribution notes</summary>
 
 After setup, run these checks from the repository root:
 
@@ -151,12 +173,14 @@ Tests cover URL formats, selected languages and sources, provider fallback, expl
 
 Contributions are welcome, particularly caption-provider adapters, player seeking, accessibility, and regression cases. See [CONTRIBUTING.md](CONTRIBUTING.md) before adding a new platform.
 
+</details>
+
 ## Attribution
 
-- **Application foundation:** [samueladegoke/yt-transcript-web](https://github.com/samueladegoke/yt-transcript-web), by Samuel Adegoke / Sam Ade, under the [MIT license](LICENSE). This adaptation retains its React/FastAPI foundation and caption extraction library, and changes retrieval behavior, timing, export, layout, and the AI handoff workflow. The original upstream AI/MCP services and deployment configuration are not part of this version.
+- **Application foundation:** [samueladegoke/yt-transcript-web](https://github.com/samueladegoke/yt-transcript-web), by Samuel Adegoke / Sam Ade, adapted from commit [`4928098`](https://github.com/samueladegoke/yt-transcript-web/commit/4928098ffe109df932a8f4bae47f31ebcf314a10) under the [MIT license](LICENSE). This adaptation retains its React/FastAPI foundation and caption extraction library, and changes retrieval behavior, timing, export, layout, and the AI handoff workflow. The original upstream AI/MCP services and deployment configuration are not part of this version.
 - **Caption retrieval:** [jdepoix/youtube-transcript-api](https://github.com/jdepoix/youtube-transcript-api).
 - **Metadata and caption fallback:** [yt-dlp/yt-dlp](https://github.com/yt-dlp/yt-dlp), used with media downloads disabled.
 - **Frontend design guidance:** [Leonxlnx/taste-skill](https://github.com/Leonxlnx/taste-skill), especially its existing-project redesign workflow.
 - **Implementation stack:** React, Vite, Tailwind CSS, FastAPI, Uvicorn, Lucide icons, and self-hosted Geist fonts. Source links and license notes are in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
-The original copyright notice is preserved unchanged. Local adaptations and the video-brief skill are maintained by [Jack-Li-Npu](https://github.com/Jack-Li-Npu). This repository starts from a clean source snapshot; the upstream commit is recorded above rather than republishing its historical deployment files. This is an independent project, not an official YouTube, TikTok, Douyin, Bilibili, or OpenAI product.
+The original copyright notice is preserved unchanged. Local adaptations and the video-brief skill are maintained by [Jack-Li-Npu](https://github.com/Jack-Li-Npu). This repository starts from a clean source snapshot; the upstream commit is recorded in this section rather than republishing its historical deployment files. This is an independent project, not an official YouTube, TikTok, Douyin, Bilibili, or OpenAI product.
