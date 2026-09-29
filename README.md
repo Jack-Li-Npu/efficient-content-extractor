@@ -18,6 +18,20 @@ Watching every minute of a long interview, lecture, or news program is often unn
 
 The web app does not call an AI service or upload transcripts automatically. The user chooses when and where to submit the text for analysis. The skill is optional; the Markdown source also works with other assistants.
 
+## Demo: from captions to a timestamped brief
+
+These two screenshots show the same Bloomberg Tech video moving through the workflow.
+
+**1. Extract and hand off the transcript.** The local app retrieves 685 caption segments and prepares the complete timestamped Markdown document. Use **Download for Codex** or **Copy for Codex** to bring it into your own chat.
+
+![Local transcript app showing the selected English caption track, 685 segments, and download and copy controls](docs/screenshots/transcript-extraction.png)
+
+**2. Read the brief and choose what to watch.** In a separate Codex chat, the `video-brief` skill guides an overview and key points with clickable YouTube timestamps. The screenshot shows the brief beside the exported source document; analysis happens in Codex, outside the web app.
+
+![Codex showing a video overview and key points with clickable timestamps beside the source transcript](docs/screenshots/codex-timestamped-brief.png)
+
+Example video: *Anthropic Goes Big on Compute, Microsoft Rethinks AI* by Bloomberg Tech. Video imagery and caption excerpts belong to their respective owners; the screenshots illustrate the workflow.
+
 ## What works today
 
 - Public individual YouTube videos with accessible uploaded or automatic captions.
