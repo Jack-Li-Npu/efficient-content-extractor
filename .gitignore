@@ -1,0 +1,27 @@
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+!frontend/.env.production
+*.cookies.txt
+youtube_cookies.txt
+
+# Dependencies, builds, and caches
+.venv/
+venv/
+node_modules/
+dist/
+build/
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+
+# Local data and development artifacts
+*.transcript.md
+verification/
+*.log
+.DS_Store
+.idea/
+.vscode/

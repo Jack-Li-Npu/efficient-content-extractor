@@ -1,0 +1,33 @@
+name: Checks
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.9.24"
+      - run: uv sync --project backend --frozen --python 3.13
+      - run: backend/.venv/bin/python -m pytest -q
+      - run: backend/.venv/bin/ruff check backend/main.py backend/app/transcript_service.py backend/tests tests
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci --no-audit --no-fund
+      - run: npm test
+      - run: npm run lint
+      - run: npm run build

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Video Brief"
+  short_description: "Key points and a watch list with source timestamps"
+  default_prompt: "Use $video-brief to read this entire transcript and give me a short overview, key points with clickable timestamps, and the sections most worth watching. Base the brief on the captions and flag uncertainty."
+policy:
+  allow_implicit_invocation: true
